@@ -1,0 +1,230 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Security.Cryptography;
+using System.Threading;
+
+namespace Manipulação_de_Arquivos
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            // Define o título da janela do console
+            Console.Title = ("Textos Rúnicos");
+            // Define o nome do usuário atual
+            string nomeUsuario = Environment.UserName;
+            // Variável para controlar saída do programa
+            bool sairPrograma = false;
+
+            // Caminho para a área de trabalho do usuário
+            string areaDeTrabalho = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+            // Cria a pasta para o inventário (se ainda não existir)
+            string pastaInventario = Path.Combine(areaDeTrabalho, "Meu Inventário");
+            Directory.CreateDirectory(pastaInventario);
+            //Log de entrada
+            string logEntrada = Path.Combine(pastaInventario, "log_entrada.txt");
+            using (StreamWriter logWriter = File.AppendText(logEntrada))
+            {
+                logWriter.WriteLine($"Viajante: {nomeUsuario}");
+                logWriter.WriteLine($"Horário do Encontro: {DateTime.Now}");
+                logWriter.WriteLine(new string('-', 30));
+            }
+
+            // Configuração de cores iniciais para a interface do usuário
+            Console.ForegroundColor = ConsoleColor.Magenta;
+
+            // Exibe um desenho inicial
+            Console.WriteLine("    ███        ▄████████ ▀████    ▐████▀     ███      ▄██████▄     ▄████████ \r\n▀█████████▄   ███    ███   ███▌   ████▀  ▀█████████▄ ███    ███   ███    ███ \r\n   ▀███▀▀██   ███    █▀     ███  ▐███       ▀███▀▀██ ███    ███   ███    █▀  \r\n    ███   ▀  ▄███▄▄▄        ▀███▄███▀        ███   ▀ ███    ███   ███        \r\n    ███     ▀▀███▀▀▀        ████▀██▄         ███     ███    ███ ▀███████████ \r\n    ███       ███    █▄    ▐███  ▀███        ███     ███    ███          ███ \r\n    ███       ███    ███  ▄███     ███▄      ███     ███    ███    ▄█    ███ \r\n   ▄████▀     ██████████ ████       ███▄    ▄████▀    ▀██████▀   ▄████████▀  \r\n                                                                             \r\n   ▄████████ ███    █▄  ███▄▄▄▄    ▄█   ▄████████  ▄██████▄     ▄████████    \r\n  ███    ███ ███    ███ ███▀▀▀██▄ ███  ███    ███ ███    ███   ███    ███    \r\n  ███    ███ ███    ███ ███   ███ ███▌ ███    █▀  ███    ███   ███    █▀     \r\n ▄███▄▄▄▄██▀ ███    ███ ███   ███ ███▌ ███        ███    ███   ███           \r\n▀▀███▀▀▀▀▀   ███    ███ ███   ███ ███▌ ███        ███    ███ ▀███████████    \r\n▀███████████ ███    ███ ███   ███ ███  ███    █▄  ███    ███          ███    \r\n  ███    ███ ███    ███ ███   ███ ███  ███    ███ ███    ███    ▄█    ███    \r\n  ███    ███ ████████▀   ▀█   █▀  █▀   ████████▀   ▀██████▀   ▄████████▀     \r\n  ███    ███                                                                 ");
+            Thread.Sleep(1000); // Aguarda por 1 segundo
+                                // Configurações de cor após desenho inicial
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n\nPressione qualquer tecla para continuar...");
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write("\n\n\n\n\n\n\nSuas informações de entrada foram salvas pelo grande mago.\nVocê poderá acessar estas informações no seu inventário");
+            Console.ReadKey();
+            Console.ForegroundColor = ConsoleColor.White;
+
+            // Limpa a tela para a próxima parte
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+
+            // Exibe mensagem narrativa
+            Console.WriteLine();
+            Console.WriteLine("Você vê uma figura distante se aproximando...");
+            Thread.Sleep(1500);
+            Console.WriteLine("Conforme o tempo passa a figura fica maior, você não percebe nenhuma ameaça vinda dela.\nVocê vê um rosto e esta figura começa a falar: ");
+            Thread.Sleep(3500);
+
+
+            // Loop principal do programa
+            while (!sairPrograma)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                string[] menuItems = { "Opção 1: Papel Qualquer", "Opção 2: Lista"};//Determina as opções do menu
+                int selectedItemIndex = 0;
+                ConsoleKeyInfo keyInfo;
+
+
+                do
+                {
+                    Console.Clear();
+                    // Exibe arte ASCII
+                    Console.WriteLine("\u001b[38;5;165m                    ____\r\n                  .'* *.'\r\n               __/_*_*(_\r\n              / _______ \\\r\n             _\\_)/___\\(_/_\r\n            / _((\\- -/))_ \\\r\n            \\ \\())(-)(()/ /\r\n             ' \\(((()))/ '\r\n            / ' \\)).))/ ' \\\r\n           / _ \\ - | - /_  \\\r\n          (   ( .;''';. .'  )\r\n          _\\\"__ /    )\\ __\"/_\r\n            \\/  \\   ' /  \\/\r\n             .'  '...' ' )\r\n              / /  |  \\ \\\r\n             / .   .   . \\\r\n            /   .     .   \\\r\n           /   /   |   \\   \\\r\n         .'   /    b    '.  '.\r\n     _.-'    /     Bb     '-. '-._\r\n _.-'       |      BBb       '-.  '-.\r\n(________mrf\\____.dBBBb.________)____)\r\n\u001b[0m");
+                    // Exibe fala do personagem
+                    Console.WriteLine("\nEstranho:");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"Olá {nomeUsuario}, já vi muitos viajantes como você! Parece que você entrou em uma masmorra misteriosa... \nOlha, caiu algo da sua mochila, é um papel!");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\u001b[38;5;208mO que este papel é?\u001b[0m");
+
+                    // Exibe as opções do menu
+                    for (int i = 0; i < menuItems.Length; i++)
+                    {
+                        if (i == selectedItemIndex)
+                        {
+                            Console.Write("-> ");
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                        }
+                        else
+                        {
+                            Console.Write("   ");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+
+                        Console.WriteLine(menuItems[i]);
+                    }
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    keyInfo = Console.ReadKey();
+
+                    // Atualiza o item selecionado com base na tecla pressionada
+                    if (keyInfo.Key == ConsoleKey.UpArrow)
+                    {
+                        selectedItemIndex = Math.Max(0, selectedItemIndex - 1);
+                    }
+                    else if (keyInfo.Key == ConsoleKey.DownArrow)
+                    {
+                        selectedItemIndex = Math.Min(menuItems.Length - 1, selectedItemIndex + 1);
+                    }
+
+                } while (keyInfo.Key != ConsoleKey.Enter);
+                //Console.WriteLine("1. Um papel de anotações\n2. Uma Lista");
+                //Console.Write("R: ");
+                //short menu = short.Parse(Console.ReadLine());
+
+                switch (selectedItemIndex)
+                {
+                    case 0:
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("Então é um pedaço de texto qualquer... Interessante...\nQual o nome deste pedaço de texto?");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            string nomeArquivo = Console.ReadLine();
+
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine($"Ah, {nomeArquivo}... e o que há escrito nele?");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            string conteudo = Console.ReadLine();
+
+                            // Cria o caminho completo do arquivo dentro da pasta
+                            string caminhoCompleto = Path.Combine(pastaInventario, nomeArquivo + ".txt");
+
+                            // Salva o arquivo dentro da pasta
+                            File.WriteAllText(caminhoCompleto, conteudo);
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine($"O item '({nomeArquivo}.txt)' foi adicionado ao seu inventário com sucesso!");
+                            //Mostrar caminho que o arquivo foi salvo
+                            Console.WriteLine($"\u001b[38;5;90mAcesse Seu inventário em {pastaInventario}\u001b[0m");
+                            bool adicionarMaisTexto = true;
+
+                            // Loop para adicionar mais texto ao arquivo
+                            while (adicionarMaisTexto)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.WriteLine("Há algo mais escrito? (S/N)");
+                                Console.ForegroundColor = ConsoleColor.White;
+                                string escolha = Console.ReadLine().ToUpper();
+                                if (escolha == "S")
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    Console.WriteLine("O que mais há escrito?");
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    string conteudoNovo = Console.ReadLine();
+                                    File.AppendAllText(caminhoCompleto, "\n" + conteudoNovo);
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    Console.WriteLine("Ah, ok :)");
+                                    adicionarMaisTexto = false;
+                                }
+                            }
+                            break;
+                        }
+                    case 1:
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("Ah, então isso que você deixou cair é uma lista.\nÉ uma lista de que?");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            Console.Write("Lista de ");
+                            string nomeLista = "Lista de "+Console.ReadLine();
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            string caminhoCompleto = Path.Combine(pastaInventario, nomeLista + ".txt");
+                            Console.WriteLine($"ah, uma {nomeLista}! Que coisa mais interessante. Quantos itens há nessa lista?");
+                            Console.ForegroundColor = ConsoleColor.White;
+                            int numItens = Convert.ToInt32( Console.ReadLine() );
+                            string[] items = new string[numItens];
+                            for (int i = 0; i < numItens; i++)
+                            {
+                                Console.ForegroundColor= ConsoleColor.Yellow;
+                                Console.WriteLine($"Digite o que tem no {i + 1}º item:");
+                                Console.ForegroundColor = ConsoleColor.White;
+                                items[i] = $"{i+1}. "+Console.ReadLine();
+                            }
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine($"Muito bem, então a {nomeLista} possui os seguintes items:");
+                            for (int i = 0; i < numItens; i++)
+                            {
+                                Console.WriteLine(items[i]);
+                            }
+                            // Formatando a lista em uma única string
+                            string listaFormatada = string.Join(Environment.NewLine, items);
+
+                            // Escrevendo a lista no arquivo
+                            File.WriteAllText(caminhoCompleto, listaFormatada);
+
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine($"O item '({nomeLista}.txt)' foi adicionado ao seu inventário com sucesso!");
+                            //Mostrar caminho que o arquivo foi salvo
+                            Console.WriteLine($"\u001b[38;5;90mAcesse Seu inventário em {pastaInventario}\u001b[0m");
+                            Console.ReadKey();
+                            break;
+                        }
+                    default:
+                        {
+                            Console.WriteLine("Opção inválida. Escolha novamente.");
+                            break;
+                        }
+                }
+
+                // Pergunta se o usuário deseja sair do programa
+                Console.WriteLine("Deseja sair do programa? (S/N)");
+                Console.ForegroundColor = ConsoleColor.White;
+                string respostaSair = Console.ReadLine().ToUpper();
+                if (respostaSair == "S")
+                {
+                    sairPrograma = true;
+                }
+                else
+                {
+                    // Mostra mensagem se o usuário não quiser sair
+                    Console.WriteLine("\u001b[38;5;165m                    ____\r\n                  .'* *.'\r\n               __/_*_*(_\r\n              / _______ \\\r\n             _\\_)/___\\(_/_\r\n            / _((\\- -/))_ \\\r\n            \\ \\())(-)(()/ /\r\n             ' \\(((()))/ '\r\n            / ' \\)).))/ ' \\\r\n           / _ \\ - | - /_  \\\r\n          (   ( .;''';. .'  )\r\n          _\\\"__ /    )\\ __\"/_\r\n            \\/  \\   ' /  \\/\r\n             .'  '...' ' )\r\n              / /  |  \\ \\\r\n             / .   .   . \\\r\n            /   .     .   \\\r\n           /   /   |   \\   \\\r\n         .'   /    b    '.  '.\r\n     _.-'    /     Bb     '-. '-._\r\n _.-'       |      BBb       '-.  '-.\r\n(________mrf\\____.dBBBb.________)____)\r\n\u001b[0m");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Olha, caiu mais um papel do seu bolso!");
+                }
+            }
+        }
+    }
+}
